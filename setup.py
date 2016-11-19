@@ -9,8 +9,9 @@ additional_args = {
     'packages': find_packages(),
     'entry_points': {
         'console_scripts': [
-            'huzzer = huzzer.__main__:main'
+            # 'huzzer = huzzer.__main__:main'
             # 'huzzer = huzzer.__main__'
+            'huzz = huzzer.huzz:main'
         ],
     }
 }

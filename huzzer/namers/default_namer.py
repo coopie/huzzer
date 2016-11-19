@@ -1,0 +1,2 @@
+class DefaultNamer:
+    pass
