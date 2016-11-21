@@ -1,5 +1,4 @@
-# from .huzz import main as huzz_main
-#
-#
-# def main():
-#     huzz_main()
+
+INT = 'Int'
+BOOL = 'Bool'
+types = [INT, BOOL]

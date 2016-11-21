@@ -9,8 +9,6 @@ additional_args = {
     'packages': find_packages(),
     'entry_points': {
         'console_scripts': [
-            # 'huzzer = huzzer.__main__:main'
-            # 'huzzer = huzzer.__main__'
             'huzz = huzzer.huzz:main'
         ],
     }
@@ -27,15 +25,15 @@ setup(
     license='MIT',
     keywords='haskell fuzzer generator',
     url='https://github.com/coopie/huzzer',
-    # package_data = {'': ['*.txt',
-    #                      'examples/*.py',
-    #                      'examples/*/*.py']},
     classifiers=[
         'Intended Audience :: Developers',
         'Natural Language :: English',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3',
         'Topic :: Software Development :: Machine Learning'
-        ],
+    ],
+    install_requires=[
+        'docopt'
+    ],
     **additional_args
 )

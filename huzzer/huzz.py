@@ -15,6 +15,7 @@ from random import randint
 from .version import VERSION
 from .namers import DefaultNamer
 from .function_generator import generate_functions
+from .code_gen import codeify_functions
 
 
 def huzzer(seed):
@@ -23,11 +24,7 @@ def huzzer(seed):
 
     # get naming generator
     namer = DefaultNamer()
-
-    # print out code
-    # with module declaration or not?
-
-    print('your seed is: ' + str(seed))
+    print(codeify_functions(functions, namer))
 
 
 def main():
