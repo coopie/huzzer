@@ -20,8 +20,7 @@ setup(
     author='Sam Coope',
     author_email='sam.j.coope@gmail.com',
     description=('A very-simple-subset-of-haskell fuzzer'),
-    long_description=""" README stuff goes here
-    """,
+    long_description=open('README.md').read(),
     license='MIT',
     keywords='haskell fuzzer generator',
     url='https://github.com/coopie/huzzer',
@@ -29,8 +28,7 @@ setup(
         'Intended Audience :: Developers',
         'Natural Language :: English',
         'Operating System :: OS Independent',
-        'Programming Language :: Python :: 3',
-        'Topic :: Software Development :: Machine Learning'
+        'Programming Language :: Python :: 3'
     ],
     install_requires=[
         'docopt'
