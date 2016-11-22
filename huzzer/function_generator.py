@@ -4,7 +4,7 @@ from . import types, INT, BOOL
 from .expressions import LITERAL_EXPRESSIONS, BRANCH_EXPRESSIONS, VariableExpression, FunctionExpression
 
 
-def generate_functions(seed, max_expression_depth=6, max_number_of_functions=4):
+def generate_functions(seed, max_expression_depth=6, max_number_of_functions=5):
     random.seed(seed)
 
     number_of_functions = random.randint(1, 4)
@@ -16,12 +16,12 @@ def generate_functions(seed, max_expression_depth=6, max_number_of_functions=4):
     function_declarations = []
     for i in range(number_of_functions):
         # Currently only generate one function definition for each function
+        type_signiature = function_exprs[i].type_signiature
         parameters = [VariableExpression(t, i) for i, t in enumerate(function_exprs[i].type_signiature[:-1])]
 
-        type_signiature = function_exprs[i].type_signiature
         function_expression = generate_expression(
             type_signiature[-1],
-            split_by_result_type(parameters),
+            split_variables_by_type(parameters),
             split_by_result_type(function_exprs),
             BRANCH_EXPRESSIONS,
             max_expression_depth
@@ -39,7 +39,7 @@ def generate_type_signiature(max_type_signiature_length=8):
     while not stop:
         type_signiature += [random_type()]
         stop = random.random() < type_signiature_alpha
-        if len(type_signiature) > max_type_signiature_length:
+        if len(type_signiature) == max_type_signiature_length:
             stop = True
     return type_signiature
 
@@ -54,7 +54,7 @@ def generate_expression(
     functions,
     branch_expressions,
     tree_depth,
-    branching_probability=0.3,
+    branching_probability=0.95,
     variable_probability=0.7,
     function_call_probability=0.5
 ):
@@ -79,6 +79,9 @@ def generate_expression(
     else:
         branch_expr = random.sample(branch_expressions[haskell_type], 1)[0]
 
+    # To stop exploding funcitons, the branching_probability is reduced wrt the number of branching expressions
+    number_of_arguments = len(branch_expr.type_signiature[:-1])
+    branching_probability = branching_probability / ((number_of_arguments+1) / 2)
     arguments_for_expr = [
         generate_expression(
             t,
@@ -117,6 +120,13 @@ def split_by_result_type(exprs):
     return {
         INT: [x for x in exprs if x.type_signiature[-1] == INT],
         BOOL: [x for x in exprs if x.type_signiature[-1] == BOOL]
+    }
+
+
+def split_variables_by_type(vars):
+    return {
+        INT: [v for v in vars if v.type_signiature == INT],
+        BOOL: [v for v in vars if v.type_signiature == BOOL]
     }
 
 

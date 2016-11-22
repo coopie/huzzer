@@ -52,6 +52,7 @@ class FunctionExpression(Expression):
 
 class VariableExpression(Expression):
     def __init__(self, type_signiature, var_id):
+        assert type_signiature in types
         self.type_signiature = type_signiature
         self.var_id = var_id
 
@@ -77,6 +78,13 @@ def stringify_infix_function(function_name):
         assert len(args) == 2
         a, b = [x.stringify(namer) for x in args]
         return '({1} {0} {2})'.format(function_name, a, b)
+    return stringify_expr
+
+
+def stringify_unary_function(function_string):
+    def stringify_expr(namer, args):
+        assert len(args) == 1
+        return function_string.format(args[0].stringify(namer))
     return stringify_expr
 
 
@@ -110,6 +118,8 @@ or_expr = Expression((BOOL, BOOL, BOOL), stringify_infix_function('||'))
 and_expr = Expression((BOOL, BOOL, BOOL), stringify_infix_function('&&'))
 or_expr = Expression((BOOL, BOOL, BOOL), stringify_infix_function('||'))
 
+not_expr = Expression((BOOL, BOOL), stringify_unary_function('(not {})'))
+fromEnum_expr = Expression((BOOL, INT), stringify_unary_function('(fromEnum {})'))
 
 All_BRANCH_EXPRESSIONS = [
     div_expr,
@@ -127,7 +137,9 @@ All_BRANCH_EXPRESSIONS = [
     lte_expr,
     or_expr,
     and_expr,
-    or_expr
+    or_expr,
+    not_expr,
+    fromEnum_expr
 ]
 
 BRANCH_EXPRESSIONS = {}
