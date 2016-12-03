@@ -11,6 +11,7 @@ Options:
 """
 from docopt import docopt
 from random import randint
+from sys import maxsize
 
 from .version import VERSION
 from .namers import DefaultNamer
@@ -24,7 +25,7 @@ def huzzer(seed):
 
     # get naming generator
     namer = DefaultNamer()
-    print(codeify_functions(functions, namer))
+    return codeify_functions(functions, namer)
 
 
 def main():
@@ -37,9 +38,9 @@ def main():
         except Exception:
             print('error: randomseed needs to be an integer, got: ' + randomseed_str)
     else:
-        randomseed = randint(0, 1 << 16)
+        randomseed = randint(0, maxsize)
 
-    huzzer(randomseed)
+    print(huzzer(randomseed))
 
 
 if __name__ == '__main__':

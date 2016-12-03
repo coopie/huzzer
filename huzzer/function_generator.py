@@ -1,15 +1,16 @@
-import random
+from random import Random
+import random as grandom
 
 from . import types, INT, BOOL
 from .expressions import LITERAL_EXPRESSIONS, BRANCH_EXPRESSIONS, VariableExpression, FunctionExpression
 
 
 def generate_functions(seed, max_expression_depth=6, max_number_of_functions=5):
-    random.seed(seed)
+    random = Random(seed)
 
     number_of_functions = random.randint(1, 4)
     function_exprs = [
-        FunctionExpression(generate_type_signiature(), i)
+        FunctionExpression(generate_type_signiature(random=random), i)
         for i in range(number_of_functions)
     ]
 
@@ -24,27 +25,28 @@ def generate_functions(seed, max_expression_depth=6, max_number_of_functions=5):
             split_variables_by_type(parameters),
             split_by_result_type(function_exprs),
             BRANCH_EXPRESSIONS,
-            max_expression_depth
+            max_expression_depth,
+            random
         )
         function_declarations += [FunctionDeclaration(function_exprs[i], [(parameters, function_expression)])]
 
     return function_declarations
 
 
-def generate_type_signiature(max_type_signiature_length=8):
-    type_signiature = [random_type()]
+def generate_type_signiature(max_type_signiature_length=8, random=grandom):
+    type_signiature = [random_type(random)]
 
     stop = False
     type_signiature_alpha = 0.3
     while not stop:
-        type_signiature += [random_type()]
+        type_signiature += [random_type(random)]
         stop = random.random() < type_signiature_alpha
         if len(type_signiature) == max_type_signiature_length:
             stop = True
     return type_signiature
 
 
-def random_type():
+def random_type(random=grandom):
     return types[random.randint(0, len(types) - 1)]
 
 
@@ -54,6 +56,7 @@ def generate_expression(
     functions,
     branch_expressions,
     tree_depth,
+    random=grandom,
     branching_probability=0.95,
     variable_probability=0.7,
     function_call_probability=0.5
@@ -71,7 +74,7 @@ def generate_expression(
         expr_is_branching = random.random() < branching_probability
 
     if not expr_is_branching:
-        return generate_unary_expr(haskell_type, variables, variable_probability)
+        return generate_unary_expr(haskell_type, variables, variable_probability, random)
 
     use_function_call = random.random() < function_call_probability
     if use_function_call and len(functions[haskell_type]) > 0:
@@ -87,6 +90,7 @@ def generate_expression(
             t,
             variables, functions, branch_expressions,
             tree_depth-1,
+            random,
             branching_probability, variable_probability, function_call_probability
         ) for t in branch_expr.type_signiature[:-1]
 
@@ -94,7 +98,7 @@ def generate_expression(
     return branch_expr(*arguments_for_expr)
 
 
-def generate_unary_expr(haskell_type, variables, variable_probability):
+def generate_unary_expr(haskell_type, variables, variable_probability, random=grandom):
     """
     TODO
     """
@@ -104,12 +108,12 @@ def generate_unary_expr(haskell_type, variables, variable_probability):
         use_literal = random.random() > variable_probability
 
     if use_literal:
-        return generate_literal(haskell_type)
+        return generate_literal(haskell_type, random)
     else:
         return random.sample(variables[haskell_type], 1)[0]
 
 
-def generate_literal(haskell_type):
+def generate_literal(haskell_type, random=grandom):
     if haskell_type == INT:
         return LITERAL_EXPRESSIONS[INT](random.randint(0, 9))
     elif haskell_type == BOOL:

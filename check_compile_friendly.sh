@@ -2,7 +2,7 @@
 mkdir -p failing_cases
 
 SEED=$1
-FILENAME=${SEED}-`date +"%d-%e-%y_%T"`
+FILENAME=${SEED}-`date +"%d-%m-%y_%T"`
 
 python huzzer -s ${SEED} > failing_cases/${FILENAME}.hs
 ghc -fno-code failing_cases/${FILENAME}.hs 2> failing_cases/${FILENAME}-compiler_output.txt 1> /dev/null
