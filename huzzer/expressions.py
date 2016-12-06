@@ -1,5 +1,3 @@
-import random
-
 from . import BOOL, INT, types
 
 
@@ -63,12 +61,11 @@ class VariableExpression(Expression):
         raise TypeError('VariableExpression should not be called as it can never be an empty expression')
 
 
-def stringify_binary_function(function_name, infix_prob=0.5):
+def stringify_binary_function(function_name):
     def stringify_expr(namer, args):
         assert len(args) == 2
         a, b = [x.stringify(namer) for x in args]
-        infix = random.random() < infix_prob
-        template = '({1} `{0}` {2})' if infix else '({0} {1} {2})'
+        template = '({0} {1} {2})'
         return template.format(function_name, a, b)
     return stringify_expr
 
@@ -100,8 +97,8 @@ def make_binary_expr(type_signiature, stringify_func):
 div_expr = Expression((INT, INT, INT), stringify_binary_function('div'))
 mod_expr = Expression((INT, INT, INT), stringify_binary_function('mod'))
 
-max_expr = Expression((INT, INT, INT), stringify_binary_function('max', 0))
-min_expr = Expression((INT, INT, INT), stringify_binary_function('min', 0))
+max_expr = Expression((INT, INT, INT), stringify_binary_function('max'))
+min_expr = Expression((INT, INT, INT), stringify_binary_function('min'))
 
 plus_expr = Expression((INT, INT, INT), stringify_infix_function('+'))
 minus_expr = Expression((INT, INT, INT), stringify_infix_function('-'))

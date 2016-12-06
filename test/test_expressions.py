@@ -88,8 +88,8 @@ def test_infix_exprs():
     assert all([expected == actual for expected, actual in zip(expected_strings, infix_expr_stringified)])
 
 
-def test_max_min():
-    expressions = [max_expr, min_expr]
+def test_max_min_mod_div():
+    expressions = [max_expr, min_expr, mod_expr, div_expr]
 
     arguments_for_exprs = [
         [generate_literal(t) for t in x.type_signiature[:-1]]
@@ -106,41 +106,9 @@ def test_max_min():
 
     expected_strings = [
         '({0} {1} {2})'.format(op, args[0].stringify(None), args[1].stringify(None))
-        for op, args in zip(['max', 'min'], arguments_for_exprs)
+        for op, args in zip(['max', 'min', 'mod', 'div'], arguments_for_exprs)
     ]
     assert all([expected == actual for expected, actual in zip(expected_strings, exprs_stringified)])
-
-
-def test_mod_div():
-    expressions = [mod_expr, div_expr]
-
-    for i in range(10):
-        arguments_for_exprs = [
-            [generate_literal(t) for t in x.type_signiature[:-1]]
-            for x in expressions
-        ]
-
-        exprs_evaled = [
-            expr(*args) for expr, args in zip(expressions, arguments_for_exprs)
-        ]
-
-        exprs_stringified = [
-            x.stringify(None) for x in exprs_evaled
-        ]
-
-        expected_strings1 = [
-            '({0} {1} {2})'.format(op, args[0].stringify(None), args[1].stringify(None))
-            for op, args in zip(['mod', 'div'], arguments_for_exprs)
-        ]
-
-        expected_strings2 = [
-            '({1} `{0}` {2})'.format(op, args[0].stringify(None), args[1].stringify(None))
-            for op, args in zip(['mod', 'div'], arguments_for_exprs)
-        ]
-        assert all([
-            expected1 == actual or exprected2 == actual
-            for expected1, exprected2, actual in zip(expected_strings1, expected_strings2, exprs_stringified)
-        ])
 
 
 def test_unary():
