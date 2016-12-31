@@ -1,4 +1,4 @@
-A very-simple-subset-of-haskell fuzzer
+A very-simple-subset-of-haskell fuzzer. With the ability to generate lexical tokens as well as plain code.
 
 ```
 module Generated (function0,function1,function2) where

@@ -113,7 +113,6 @@ lte_expr = Expression((INT, INT, BOOL), stringify_infix_function('<='))
 
 or_expr = Expression((BOOL, BOOL, BOOL), stringify_infix_function('||'))
 and_expr = Expression((BOOL, BOOL, BOOL), stringify_infix_function('&&'))
-or_expr = Expression((BOOL, BOOL, BOOL), stringify_infix_function('||'))
 
 not_expr = Expression((BOOL, BOOL), stringify_unary_function('(not {})'))
 fromEnum_expr = Expression((BOOL, INT), stringify_unary_function('(fromEnum {})'))
