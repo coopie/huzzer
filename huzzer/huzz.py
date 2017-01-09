@@ -13,7 +13,7 @@ from docopt import docopt
 from random import randint
 from sys import maxsize
 
-from .version import VERSION
+from . import VERSION
 from .namers import DefaultNamer
 from .function_generator import generate_functions
 from .code_gen import codeify_functions
