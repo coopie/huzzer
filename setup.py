@@ -2,7 +2,7 @@
 # from setup3lib import setup
 from setuptools import setup
 from setuptools import find_packages
-from huzzer.version import VERSION
+from huzzer import VERSION
 
 additional_args = {
     'zip_safe': False,
@@ -31,7 +31,8 @@ setup(
         'Programming Language :: Python :: 3'
     ],
     install_requires=[
-        'docopt'
+        'docopt',
+        'antlr4-python3-runtime==4.6'
     ],
     **additional_args
 )

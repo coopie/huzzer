@@ -34,5 +34,10 @@ run `./large_acceptance_test.sh <number of tests>`
 
 ## TODOs
 * multiple definitions for functions
-* some unary expressions (fromEnum, !, abs)
-* more commandline arguments for customisation
+
+### Distribution
+make sure to remove older versions of the package
+```
+python setup.py sdist bdist_wheel
+twine upload dist/*
+```
