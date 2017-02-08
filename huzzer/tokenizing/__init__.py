@@ -1,10 +1,10 @@
 from .tokenize import tokenize
 
 def token_to_string(token_id):
-    return TOKEN_MAP[token_id % len(TOKEN_MAP)]
+    return TOKEN_MAP[token_id]
 
 TOKEN_MAP = [
-    '\n',
+    'NOTHING',
     'module',
     'Generated',
     'where',
@@ -56,5 +56,6 @@ TOKEN_MAP = [
     'True',
     'False',
     '(',
-    ')'
+    ')',
+    '\n'
 ]
