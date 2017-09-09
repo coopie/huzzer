@@ -5,12 +5,20 @@ from . import types, INT, BOOL
 from .expressions import LITERAL_EXPRESSIONS, BRANCH_EXPRESSIONS, VariableExpression, FunctionExpression
 
 
-def generate_functions(seed, max_expression_depth=6, max_number_of_functions=5):
+def generate_functions(
+    seed,
+    max_expression_depth=6,
+    max_number_of_functions=4,
+    max_type_signiature_length=8
+):
     random = Random(seed)
 
-    number_of_functions = random.randint(1, 4)
+    number_of_functions = random.randint(1, max_number_of_functions)
     function_exprs = [
-        FunctionExpression(generate_type_signiature(random=random), i)
+        FunctionExpression(
+            generate_type_signiature(max_type_signiature_length, random=random),
+            i
+        )
         for i in range(number_of_functions)
     ]
 
@@ -18,7 +26,10 @@ def generate_functions(seed, max_expression_depth=6, max_number_of_functions=5):
     for i in range(number_of_functions):
         # Currently only generate one function definition for each function
         type_signiature = function_exprs[i].type_signiature
-        parameters = [VariableExpression(t, i) for i, t in enumerate(function_exprs[i].type_signiature[:-1])]
+        parameters = [
+            VariableExpression(t, i)
+            for i, t in enumerate(function_exprs[i].type_signiature[:-1])
+        ]
 
         function_expression = generate_expression(
             type_signiature[-1],
@@ -28,7 +39,9 @@ def generate_functions(seed, max_expression_depth=6, max_number_of_functions=5):
             max_expression_depth,
             random
         )
-        function_declarations += [FunctionDeclaration(function_exprs[i], [(parameters, function_expression)])]
+        function_declarations += [
+            FunctionDeclaration(function_exprs[i], [(parameters, function_expression)])
+        ]
 
     return function_declarations
 
