@@ -114,7 +114,6 @@ run `./large_acceptance_test.sh <number of tests>`
 * multiple definitions for functions
 
 ### Distribution
-make sure to remove older versions of the package
 ```
 python setup.py sdist bdist_wheel
 twine upload dist/*
